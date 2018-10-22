@@ -1,7 +1,41 @@
 module EDSL
   module PageObject
-    # Most of this is a semi-direct copy from PageObject
-    module Navigation
+    module Visitable
+      #
+      # Set some values that can be used within the class.  This is
+      # typically used to provide values that help build dynamic urls in
+      # the page_url method
+      #
+      # @param [Hash] the value to set the params
+      #
+      def params=(the_params)
+        @params = the_params
+      end
+
+      #
+      # Return the params that exist on this page class
+      #
+      def params
+        @params ||= {}
+      end
+
+      def page_url(url)
+        define_method("goto") do
+          browser.goto self.page_url_value
+        end
+
+        define_method('page_url_value') do
+          lookup        = url.kind_of?(Symbol) ? self.send(url) : url
+          erb           = ::ERB.new(%Q{#{lookup}})
+          merged_params = self.class.instance_variable_get("@merged_params")
+          params        = merged_params ? merged_params : self.class.params
+          erb.result(binding)
+        end
+      end
+    end
+
+    # Most of this is a semi-direct copy from PageObject::PageFactory
+    module Visitation
       #
       # Create and navigate to a page object.  The navigation will only work if the
       # 'page_url' method was call on the page object.

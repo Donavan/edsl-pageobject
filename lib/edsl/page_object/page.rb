@@ -3,40 +3,6 @@ module EDSL
   module PageObject
     DEFAULT_PAGE_READY_LIMIT = 30
 
-    module WithURL
-      #
-      # Set some values that can be used within the class.  This is
-      # typically used to provide values that help build dynamic urls in
-      # the page_url method
-      #
-      # @param [Hash] the value to set the params
-      #
-      def params=(the_params)
-        @params = the_params
-      end
-
-      #
-      # Return the params that exist on this page class
-      #
-      def params
-        @params ||= {}
-      end
-
-      def page_url(url)
-        define_method("goto") do
-          browser.goto self.page_url_value
-        end
-
-        define_method('page_url_value') do
-          lookup        = url.kind_of?(Symbol) ? self.send(url) : url
-          erb           = ::ERB.new(%Q{#{lookup}})
-          merged_params = self.class.instance_variable_get("@merged_params")
-          params        = merged_params ? merged_params : self.class.params
-          erb.result(binding)
-        end
-      end
-    end
-
     # This class represents an entire page within the browser.
     #
     # Using this base class is not a requirement, however code in some modules may assume that
@@ -46,9 +12,10 @@ module EDSL
     #
     class Page < ::EDSL::ElementContainer
       include EDSL::PageObject::Population
+      extend EDSL::PageObject::Visitable
+
       attr_accessor :page_ready_limit
       alias_method :browser, :root_element
-      extend WithURL
 
       # Create a new page.
       def initialize(web_browser, visit = false)

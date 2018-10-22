@@ -30,7 +30,7 @@ class GoogleResultsPage < GoogleSearchPage
 end
 
 module GoogleDemo
-  extend EDSL::PageObject::Navigation
+  extend EDSL::PageObject::Visitation
 
   query = ARGV[0] || 'ruby'
 

@@ -31,6 +31,8 @@ module EDSL
                         wrapper_fn: lambda { |element, _container| section_class.new(element, self) } }.merge(opts))
       end
 
+      alias_method :page_section, :section
+
       def sections(name, section_class, opts)
         i_sel = opts.delete(:item)
         item_how = i_sel.delete(:how)
