@@ -29,7 +29,6 @@ module EDSL
           erb           = ::ERB.new(%Q{#{lookup}})
           merged_params = self.class.instance_variable_get("@merged_params")
           params        = merged_params ? merged_params : self.class.params
-          binding.pry
           erb.result(binding)
         end
       end
@@ -78,6 +77,11 @@ module EDSL
 
       # Support 'on' for readability of usage
       alias_method :on, :on_page
+
+      def on_current_page(&block)
+        yield @current_page if block
+        @current_page
+      end
 
       #
       # Create a page object if and only if the current page is the same page to be created

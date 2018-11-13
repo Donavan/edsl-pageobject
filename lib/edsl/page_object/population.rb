@@ -22,14 +22,14 @@ module EDSL
 
       # Returns the currently defined fixture fetch function or a lambda that returns nil
       def self.fixture_fetcher
-        @@fixture_fetcher = lambda.new { |_key| nil }
+        @@fixture_fetcher ||= lambda { |_key| nil }
       end
 
       # Fetch a value from our fixtures using a key.
       #
       # @param key [String, Symbol] What to fetch
       def fixture_fetch(key)
-        ff = fixture_fetcher
+        ff = EDSL::PageObject::Population.fixture_fetcher
         return ff.call(key) if ff.is_a?(Proc)
         send(ff, key)
       end
@@ -64,6 +64,10 @@ module EDSL
       # so LoginPage would have a populate key of login_page.
       def populate_key
         self.class.to_s.snakecase
+      end
+
+      def populate
+        populate_with(fixture_fetch(populate_key))
       end
     end
   end
