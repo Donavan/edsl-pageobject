@@ -8,9 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Donavan Stanley']
   spec.email         = ['donavan.stanley@gmail.com']
 
-  spec.summary       = 'Page object pattern of EDSL'
-  spec.description   = 'Page object pattern without PageObject'
-  spec.homepage      = 'https://github.com/jdonavan'
+  spec.summary       = 'Page object pattern using EDSL'
+  spec.homepage      = 'https://github.com/donavan/edsl-pageobject'
   spec.license       = 'MIT'
 
   spec.metadata['homepage_uri'] = spec.homepage
@@ -28,9 +27,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency 'pry-stack_explorer'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'simplecov'
 
   spec.add_runtime_dependency 'edsl'
 end
