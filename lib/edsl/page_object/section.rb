@@ -9,6 +9,8 @@ module EDSL
     #
     class Section < ElementContainer
       include EDSL::PageObject::Population
+      include EDSL::PageObject::AJAX
+
       # Create a new section
       def initialize(element, parent)
         super(element, parent)

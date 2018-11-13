@@ -12,6 +12,7 @@ module EDSL
     #
     class Page < ::EDSL::ElementContainer
       include EDSL::PageObject::Population
+      include EDSL::PageObject::AJAX
       extend EDSL::PageObject::Visitable
 
       attr_accessor :page_ready_limit
