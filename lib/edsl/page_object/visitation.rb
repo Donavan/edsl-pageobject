@@ -21,7 +21,7 @@ module EDSL
 
       def page_url(url)
         define_method("goto") do
-          browser.goto self.page_url_value
+          browser.goto page_url_value
         end
 
         define_method('page_url_value') do
@@ -29,6 +29,7 @@ module EDSL
           erb           = ::ERB.new(%Q{#{lookup}})
           merged_params = self.class.instance_variable_get("@merged_params")
           params        = merged_params ? merged_params : self.class.params
+          binding.pry
           erb.result(binding)
         end
       end

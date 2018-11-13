@@ -1,6 +1,6 @@
 # EDSL-pageobject
 
-This gem implements the page object pattern using EDSL.  It provides a familiar syntax while allowing us to take advantage of the flexibility of EDSL.
+This gem implements the page object pattern using [EDSL](https://github.com/donavan/edsl).  It provides a familiar syntax while allowing us to take advantage of the flexibility of EDSL.
 
 If you're familiar with the PageObject gem, this gem has a mostly compatible syntax. While not a drop-in replacement, refactoring PageObject based code is fairly simple.
 
