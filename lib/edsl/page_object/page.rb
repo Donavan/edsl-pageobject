@@ -53,6 +53,13 @@ module EDSL
       def _ready?
         true
       end
+
+      def leave_page_using(method, expected_url = nil)
+        cur_url = browser.url
+        method.call if method.is_a?(Proc)
+        send(method) unless method.is_a?(Proc)
+        Watir::Wait.until { expected_url ? browser.url == expected_url : browser.url != cur_url }
+      end
     end
   end
 end
