@@ -89,7 +89,10 @@ module EDSL
       def wait_for_ajax(timeout = 30, message = nil)
         end_time = ::Time.now + timeout
         until ::Time.now > end_time
-          return if browser.execute_script(::EDSL::PageObject::JavascriptFrameworkFacade.pending_requests) == 0
+          begin
+            return if browser.execute_script(::EDSL::PageObject::JavascriptFrameworkFacade.pending_requests) == 0
+          rescue Selenium::WebDriver::Error::UnknownError, Selenium::WebDriver::Error::JavascriptError
+          end
           sleep 0.5
         end
         message = "Timed out waiting for ajax requests to complete" unless message
