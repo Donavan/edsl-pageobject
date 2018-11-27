@@ -1,3 +1,5 @@
+require 'page_navigation'
+
 module EDSL
   module PageObject
     module Visitable
@@ -36,6 +38,7 @@ module EDSL
 
     # Most of this is a semi-direct copy from PageObject::PageFactory
     module Visitation
+      include PageNavigation
       #
       # Create and navigate to a page object.  The navigation will only work if the
       # 'page_url' method was call on the page object.
