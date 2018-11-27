@@ -30,7 +30,7 @@ module EDSL
     EDSL.extend_dsl {
       def section(name, section_class, opts)
         element(name, { how: :div, assign_method: :populate_with,
-                        wrapper_fn: lambda { |element, _container| section_class.new(element, self) } }.merge(opts))
+                        wrapper_fn: lambda { |element, container| section_class.new(element, container) } }.merge(opts))
       end
 
       alias_method :page_section, :section
