@@ -2,9 +2,16 @@ require 'facets/string'
 
 module EDSL
   module PageObject
+
+    def self.fixture_cache
+      @@cache ||= {}
+    end
+
     # This module serves as a mixin for element container to support populating their
     # fields via a hash.
     module Population
+
+
 
       # This method allows you to specify a function to be used to fetch fixture data,
       # given a key.  The value passed should either be a proc, or a method name for send.
@@ -30,8 +37,10 @@ module EDSL
       # @param key [String, Symbol] What to fetch
       def fixture_fetch(key)
         ff = EDSL::PageObject::Population.fixture_fetcher
-        return ff.call(key) if ff.is_a?(Proc)
-        send(ff, key)
+        data = ff.call(key) if ff.is_a?(Proc)
+        data = send(ff, key) unless ff.is_a?(Proc)
+        EDSL::PageObject.fixture_cache[key] = data
+        data
       end
 
       # This method will populate the various elements within a container, using a hash.
@@ -55,7 +64,11 @@ module EDSL
         data = data.fetch(populate_key, data)
         data = data.fetch(populate_key.to_sym, data)
         data.each do |k, v|
-          send("#{k}=", v) if respond_to?("#{k}=")
+          begin
+            send("#{k}=", v) if respond_to?("#{k}=")
+          rescue Exception => ex
+            raise "#{ex.message} raised with setting #{k}"
+          end
         end
       end
 
