@@ -38,7 +38,7 @@ module EDSL
       def sections(name, section_class, opts)
         i_sel = opts.delete(:item)
         item_how = i_sel.delete(:how) || :divs
-        default_method = lambda { |_name, container| container.send("#{name}_element").send(item_how, i_sel).map { |i| section_class.new(i, self) } }
+        default_method = lambda { |_name, container| container.send("#{name}_element").send(item_how, i_sel).map { |i| section_class.new(i, container) } }
         element(name, { how: :div,
                         default_method:  default_method }.merge(opts))
       end
