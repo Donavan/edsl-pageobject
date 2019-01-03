@@ -39,7 +39,7 @@ module EDSL
       #
       def when_ready(limit = nil, &block)
         begin
-          Watir::Wait.until(limit || page_ready_limit) { _ready? }
+          Watir::Wait.until(timeout: (limit || page_ready_limit)) { _ready? }
         rescue Timeout::Error
           raise Timeout::Error, "Timeout limit #{limit} reached waiting for #{self.class} to be ready"
         end

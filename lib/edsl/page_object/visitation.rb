@@ -73,17 +73,17 @@ module EDSL
         return super(page_class, params, visit, &block) unless page_class.ancestors.include? Page
         merged = page_class.params.merge(params[:using_params])
         page_class.instance_variable_set("@merged_params", merged) unless merged.empty?
-        @current_page = page_class.new(@browser, visit)
-        block.call @current_page if block
-        @current_page
+        @@current_page = page_class.new(@browser, visit)
+        block.call @@current_page if block
+        @@current_page
       end
 
       # Support 'on' for readability of usage
       alias_method :on, :on_page
 
       def on_current_page(&block)
-        yield @current_page if block
-        @current_page
+        yield @@current_page if block
+        @@current_page
       end
 
       #
@@ -97,7 +97,7 @@ module EDSL
       #
       def if_page(page_class, params={:using_params => {}},&block)
         page_class = class_from_string(page_class) if page_class.is_a? String
-        return @current_page unless @current_page.class == page_class
+        return @@current_page unless @@current_page.class == page_class
         on_page(page_class, params, false, &block)
       end
 
